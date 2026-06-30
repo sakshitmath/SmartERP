@@ -10,9 +10,9 @@ import com.smarterp.repositories.LedgerGroupRepository;
 import com.smarterp.repositories.LedgerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -60,11 +60,13 @@ public class LedgerService {
         return toDTO(ledgerRepository.save(ledger));
     }
 
+    @Transactional
     public List<LedgerResponseDTO> getAllLedgers(Long companyId) {
         return ledgerRepository.findByCompanyIdAndIsDeletedFalse(companyId)
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
+    @Transactional
     public List<LedgerResponseDTO> getLedgersByType(Long companyId, Ledger.LedgerType type) {
         return ledgerRepository.findByCompanyIdAndTypeAndIsDeletedFalse(companyId, type)
                 .stream().map(this::toDTO).collect(Collectors.toList());

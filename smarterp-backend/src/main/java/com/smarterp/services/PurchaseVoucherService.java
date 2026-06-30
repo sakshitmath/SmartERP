@@ -34,7 +34,7 @@ public class PurchaseVoucherService {
         // Generate voucher number
         long count = voucherRepository.countByCompanyIdAndVoucherType(
                 request.getCompanyId(), Voucher.VoucherType.PURCHASE);
-        String voucherNumber = "PUR-" + String.format("%04d", count + 1);
+        String voucherNumber = "PUR-" + request.getCompanyId() + "-" + String.format("%04d", count + 1);
 
         // Build items + calculate totals
         List<VoucherItem> voucherItems = new ArrayList<>();
@@ -98,6 +98,8 @@ public class PurchaseVoucherService {
         return toDTO(saved);
     }
 
+
+    @Transactional
     public List<VoucherResponseDTO> getPurchaseVouchers(Long companyId) {
         return voucherRepository
                 .findByCompanyIdAndVoucherTypeAndIsDeletedFalse(companyId, Voucher.VoucherType.PURCHASE)
