@@ -52,10 +52,16 @@ export default function StockPage() {
               type="number" value={form.purchasePrice} onChange={e => setForm({...form, purchasePrice: e.target.value})} required />
             <input className="w-full bg-gray-700 px-3 py-2 rounded text-white" placeholder="Selling Price *"
               type="number" value={form.sellingPrice} onChange={e => setForm({...form, sellingPrice: e.target.value})} required />
-            <input className="w-full bg-gray-700 px-3 py-2 rounded text-white" placeholder="Opening Quantity"
-              type="number" value={form.quantity} onChange={e => setForm({...form, quantity: e.target.value})} />
-            <input className="w-full bg-gray-700 px-3 py-2 rounded text-white" placeholder="GST Rate %"
-              type="number" value={form.gstRate} onChange={e => setForm({...form, gstRate: e.target.value})} />
+           <div>
+              <label className="text-xs text-gray-400">Opening Quantity</label>
+              <input className="w-full bg-gray-700 px-3 py-2 rounded text-white mt-1" placeholder="0"
+                type="number" value={form.quantity} onChange={e => setForm({...form, quantity: e.target.value})} />
+            </div>
+            <div>
+              <label className="text-xs text-gray-400">GST Rate %</label>
+              <input className="w-full bg-gray-700 px-3 py-2 rounded text-white mt-1" placeholder="0"
+                type="number" value={form.gstRate} onChange={e => setForm({...form, gstRate: e.target.value})} />
+            </div>
             <select className="w-full bg-gray-700 px-3 py-2 rounded text-white"
               value={form.unit} onChange={e => setForm({...form, unit: e.target.value})}>
               <option>PCS</option><option>BOX</option><option>KG</option><option>LTR</option>
