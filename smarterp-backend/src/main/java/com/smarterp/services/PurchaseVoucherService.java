@@ -76,14 +76,15 @@ public class PurchaseVoucherService {
         // Update supplier ledger balance
         supplierLedger.setCurrentBalance(supplierLedger.getCurrentBalance().add(grandTotal));
         ledgerRepository.save(supplierLedger);
-        // Double-entry: debit Purchase Account ledger (expense goes up)
-        List<Ledger> purchaseAccounts = ledgerRepository.findByCompanyIdAndGroupNature(
-                request.getCompanyId(), LedgerGroup.GroupNature.EXPENSES);
-        if (!purchaseAccounts.isEmpty()) {
-            Ledger purchaseAccount = purchaseAccounts.get(0);
-            purchaseAccount.setCurrentBalance(purchaseAccount.getCurrentBalance().add(grandTotal));
-            ledgerRepository.save(purchaseAccount);
-        }
+        // Double-entry: debit Purchase Account
+        ledgerRepository.findByCompanyIdAndIsDeletedFalse(request.getCompanyId())
+                .stream()
+                .filter(l -> l.getName().equalsIgnoreCase("Purchase Account"))
+                .findFirst()
+                .ifPresent(purchaseLedger -> {
+                    purchaseLedger.setCurrentBalance(purchaseLedger.getCurrentBalance().add(grandTotal));
+                    ledgerRepository.save(purchaseLedger);
+                });
 
         // Save voucher
         Voucher voucher = Voucher.builder()

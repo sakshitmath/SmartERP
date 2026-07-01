@@ -82,13 +82,15 @@ public class SalesVoucherService {
         customerLedger.setCurrentBalance(customerLedger.getCurrentBalance().add(grandTotal));
         ledgerRepository.save(customerLedger);
         // Double-entry: credit Sales Account ledger (income goes up)
-        List<Ledger> salesAccounts = ledgerRepository.findByCompanyIdAndGroupNature(
-                request.getCompanyId(), LedgerGroup.GroupNature.INCOME);
-        if (!salesAccounts.isEmpty()) {
-            Ledger salesAccount = salesAccounts.get(0);
-            salesAccount.setCurrentBalance(salesAccount.getCurrentBalance().add(grandTotal));
-            ledgerRepository.save(salesAccount);
-        }
+        // Double-entry: credit Sales Account
+        ledgerRepository.findByCompanyIdAndIsDeletedFalse(request.getCompanyId())
+                .stream()
+                .filter(l -> l.getName().equalsIgnoreCase("Sales Account"))
+                .findFirst()
+                .ifPresent(salesLedger -> {
+                    salesLedger.setCurrentBalance(salesLedger.getCurrentBalance().add(grandTotal));
+                    ledgerRepository.save(salesLedger);
+                });
 
         Voucher voucher = Voucher.builder()
                 .voucherType(Voucher.VoucherType.SALES)
