@@ -31,6 +31,15 @@ public class LedgerGroupController {
         Company company = companyRepository.findByIdAndIsDeletedFalse(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
 
+        // Check if group already exists
+        List<LedgerGroup> existing = ledgerGroupRepository.findByCompanyIdAndIsDeletedFalse(companyId);
+        boolean alreadyExists = existing.stream()
+                .anyMatch(g -> g.getName().equalsIgnoreCase(name));
+
+        if (alreadyExists) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Group '" + name + "' already exists"));
+        }
+
         LedgerGroup group = LedgerGroup.builder()
                 .name(name)
                 .nature(nature)
@@ -44,20 +53,5 @@ public class LedgerGroupController {
                 "name", saved.getName(),
                 "nature", saved.getNature()
         ));
-    }
-
-    @GetMapping("/company/{companyId}")
-    @Transactional
-    public ResponseEntity<?> getAll(@PathVariable Long companyId) {
-        List<Map<String, Object>> result = ledgerGroupRepository
-                .findByCompanyIdAndIsDeletedFalse(companyId)
-                .stream()
-                .map(g -> Map.<String, Object>of(
-                        "id", g.getId(),
-                        "name", g.getName(),
-                        "nature", g.getNature()
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(result);
     }
 }

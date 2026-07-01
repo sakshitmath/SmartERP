@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.smarterp.entities.LedgerGroup;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +76,14 @@ public class PurchaseVoucherService {
         // Update supplier ledger balance
         supplierLedger.setCurrentBalance(supplierLedger.getCurrentBalance().add(grandTotal));
         ledgerRepository.save(supplierLedger);
+        // Double-entry: debit Purchase Account ledger (expense goes up)
+        List<Ledger> purchaseAccounts = ledgerRepository.findByCompanyIdAndGroupNature(
+                request.getCompanyId(), LedgerGroup.GroupNature.EXPENSES);
+        if (!purchaseAccounts.isEmpty()) {
+            Ledger purchaseAccount = purchaseAccounts.get(0);
+            purchaseAccount.setCurrentBalance(purchaseAccount.getCurrentBalance().add(grandTotal));
+            ledgerRepository.save(purchaseAccount);
+        }
 
         // Save voucher
         Voucher voucher = Voucher.builder()
