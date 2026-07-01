@@ -11,6 +11,8 @@ import BalanceSheetPage from './pages/reports/BalanceSheetPage';
 import ProfitLossPage from './pages/reports/ProfitLossPage';
 import Register from './pages/auth/Register';
 import CompanyPage from './pages/masters/CompanyPage';
+import PaymentVoucherPage from './pages/vouchers/PaymentVoucherPage';
+import ReceiptVoucherPage from './pages/vouchers/ReceiptVoucherPage';
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -31,6 +33,8 @@ function App() {
       <Route path="/masters/stock" element={<PrivateRoute><StockPage /></PrivateRoute>} />
       <Route path="/vouchers/purchase" element={<PrivateRoute><PurchaseVoucherPage /></PrivateRoute>} />
       <Route path="/vouchers/sales" element={<PrivateRoute><SalesVoucherPage /></PrivateRoute>} />
+      <Route path="/vouchers/payment" element={<PrivateRoute><PaymentVoucherPage /></PrivateRoute>} />
+<Route path="/vouchers/receipt" element={<PrivateRoute><ReceiptVoucherPage /></PrivateRoute>} />
       <Route path="/reports/trial-balance" element={<PrivateRoute><TrialBalancePage /></PrivateRoute>} />
       <Route path="/reports/stock-summary" element={<PrivateRoute><StockSummaryPage /></PrivateRoute>} />
       <Route path="/reports/balance-sheet" element={<PrivateRoute><BalanceSheetPage /></PrivateRoute>} />

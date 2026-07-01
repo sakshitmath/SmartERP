@@ -27,11 +27,14 @@ if (e.key === 'F1') {
         navigate('/vouchers/purchase');
       }
 
-      // F5 = Payment Voucher
       if (e.key === 'F5') {
-        e.preventDefault();
-        navigate('/vouchers/payment');
-      }
+  e.preventDefault();
+  navigate('/vouchers/payment');
+}
+if (e.key === 'F6') {
+  e.preventDefault();
+  navigate('/vouchers/receipt');
+}
 
       // Alt+L = Create Ledger
       if (e.altKey && e.key === 'l') {

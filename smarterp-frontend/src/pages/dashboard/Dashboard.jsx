@@ -46,6 +46,8 @@ export default function Dashboard() {
     { title: '📦 Stock Items', desc: 'Alt+S', path: '/masters/stock', color: 'purple' },
     { title: '🛒 Purchase Voucher', desc: 'F9', path: '/vouchers/purchase', color: 'orange' },
     { title: '🧾 Sales Voucher', desc: 'F8', path: '/vouchers/sales', color: 'green' },
+    { title: '💳 Payment Voucher', desc: 'F5', path: '/vouchers/payment', color: 'yellow' },
+{ title: '🧾 Receipt Voucher', desc: 'F6', path: '/vouchers/receipt', color: 'cyan' },
     { title: '📊 Trial Balance', desc: 'Alt+T', path: '/reports/trial-balance', color: 'yellow' },
     { title: '📈 Stock Summary', desc: 'Alt+R', path: '/reports/stock-summary', color: 'pink' },
     { title: '💰 Balance Sheet', desc: 'Alt+B', path: '/reports/balance-sheet', color: 'cyan' },
